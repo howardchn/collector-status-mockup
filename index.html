@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Collector Status</title>
+    <link rel="stylesheet" type="text/css" href="http://lmui.s3-website-us-west-2.amazonaws.com/css/style.css" media="screen">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        #collectorStatusContainer {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .glyph {
+            float: left;
+            padding: 5px 20px;
+        }
+
+        .item-oneline {
+            padding: 5px;
+        }
+
+        .item-wrap {
+            /* border: solid 1px gray; */
+            padding: 4px 8px;
+            display: inline-block;
+            margin: 0px 4px 4px 0px;
+        }
+
+        .title {
+            margin-top: 40px;
+            font-weight: bolder;
+            font-size: 22px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="collectorStatusContainer">
+        <div>
+            <div class="glyph ">
+                <svg class="icons26 icon-primary1 icon-collector-26" style="width:40px; height:40px;">
+                    <use xlink:href="#icon-collector-26">
+                        <svg id="icon-collector-26" viewBox="0 0 1024 1024" width="100%" height="100%">
+                            <title>collector-26</title>
+                            <path class="path1" d="M769.407 861.324c-80.176 78.084-189.89 123.291-303.824 123.291-236.308 0-426.198-189.046-426.198-423.299 0-110.962 46.418-217.814 126.593-300.008 80.176-78.084 189.89-123.291 303.824-123.291v226.033c-54.857 0-101.275 20.548-139.253 57.536s-59.077 86.304-59.077 139.73c0 106.852 88.615 197.266 198.33 197.266 54.857 0 101.275-20.548 139.253-57.536s59.077-86.304 59.077-139.73h227.868c0 115.072-46.418 221.924-126.593 300.008v0 0zM921.319 401.038c-67.516 65.755-168.791 78.084-248.967 36.987l-185.67 102.742 101.275-176.717c-50.637-82.194-42.198-189.046 29.538-263.021 84.396-82.194 219.429-82.194 303.824 0s84.396 217.814 0 300.008v0 0z"></path>
+                        </svg>
+                    </use>
+                </svg>
+            </div>
+            <h1>Collector Status Page</h1>
+        </div>
+
+        <section-oneline title="Basic Information" :items="basicInfos"></section-oneline>
+        <section-wrap title="Module Status" :items="moduleState"></section-wrap>
+        <section-wrap title="Event Collecting" :items="eventCollecting"></section-wrap>
+        <section-wrap title="Data Collecting" :items="dataCollecting"></section-wrap>
+    </div>
+    <script src="https://cdn.bootcss.com/vue/2.6.6/vue.min.js"></script>
+    <script src="./data.js"></script>
+    <script>
+        function getOnelineStatusClass(status) {
+            switch (status) {
+                case 'OK': return ''
+                case 'Disabled': return 'alert alert-secondary'
+                case 'Error': return 'alert alert-danger'
+                case 'Warn': return 'alert alert-warning'
+                default: break
+            }
+        }
+        function getWrapStatusClass(status) {
+            switch (status) {
+                case 'OK': return 'alert alert-success'
+                case 'Disabled': return 'alert alert-secondary'
+                case 'Error': return 'alert alert-danger'
+                case 'Warn': return 'alert alert-warning'
+                default: break
+            }
+        }
+
+        Vue.component('section-oneline', {
+            props: ['title', 'items'],
+            template: `
+            <section>
+                <h2 class="title">{{ title }}</h2>
+                <div>
+                    <div class="item-oneline" :class="getOnelineStatusClass(item.Status)" v-for="item in items">
+                        {{ item.Name }} : {{ item.Details }}    
+                    </div>
+                </div>    
+            </section>
+            `
+        })
+
+        Vue.component('section-wrap', {
+            props: ['title', 'items'],
+            template: `
+            <section>
+                <h2 class="title">{{ title }}</h2>
+                <div>
+                    <div :class="'item-wrap ' + getWrapStatusClass(item.Status)" v-for="item in items">
+                        {{ item.Name }} : {{ item.Details }}    
+                    </div>
+                </div>    
+            </section>
+            `
+        })
+
+        const vue = new Vue({
+            el: '#collectorStatusContainer',
+            data
+        })
+    </script>
+</body>
+
+</html>
