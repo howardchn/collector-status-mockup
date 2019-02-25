@@ -8,31 +8,12 @@
     <title>Collector Status</title>
     <link rel="stylesheet" type="text/css" href="http://lmui.s3-website-us-west-2.amazonaws.com/css/style.css" media="screen">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./styles.css" rel="stylesheet">
     <style>
-        #collectorStatusContainer {
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-        .glyph {
-            float: left;
-            padding: 5px 20px;
-        }
-
-        .item-oneline {
-            padding: 5px;
-        }
-
         .item-wrap {
-            /* border: solid 1px gray; */
             padding: 4px 8px;
             display: inline-block;
             margin: 0px 4px 4px 0px;
-        }
-
-        .title {
-            margin-top: 40px;
-            font-weight: bolder;
-            font-size: 22px;
         }
     </style>
 </head>
@@ -52,7 +33,13 @@
             </div>
             <h1>Collector Status Page</h1>
         </div>
-
+        <section class="legends">
+            <span class="legend alert alert-success">55 in good status</span>
+            <span class="legend alert alert-warning">22 in warning status</span>
+            <span class="legend alert alert-danger">5 in error status</span>
+            <span class="legend alert alert-secondary">4 is disabled</span>
+            <span style="padding-left: 10px;">Last Updated at Feb 25, 2019 22:22:33</span>
+        </section>
         <section-oneline title="Basic Information" :items="basicInfos"></section-oneline>
         <section-wrap title="Module Status" :items="moduleState"></section-wrap>
         <section-wrap title="Event Collecting" :items="eventCollecting"></section-wrap>
@@ -63,20 +50,31 @@
     <script>
         function getOnelineStatusClass(status) {
             switch (status) {
-                case 'OK': return ''
-                case 'Disabled': return 'alert alert-secondary'
-                case 'Error': return 'alert alert-danger'
-                case 'Warn': return 'alert alert-warning'
-                default: break
+                case 'OK':
+                    return ''
+                case 'Disabled':
+                    return 'alert alert-secondary'
+                case 'Error':
+                    return 'alert alert-danger'
+                case 'Warn':
+                    return 'alert alert-warning'
+                default:
+                    break
             }
         }
+
         function getWrapStatusClass(status) {
             switch (status) {
-                case 'OK': return 'alert alert-success'
-                case 'Disabled': return 'alert alert-secondary'
-                case 'Error': return 'alert alert-danger'
-                case 'Warn': return 'alert alert-warning'
-                default: break
+                case 'OK':
+                    return 'alert alert-success'
+                case 'Disabled':
+                    return 'alert alert-secondary'
+                case 'Error':
+                    return 'alert alert-danger'
+                case 'Warn':
+                    return 'alert alert-warning'
+                default:
+                    break
             }
         }
 
@@ -84,7 +82,7 @@
             props: ['title', 'items'],
             template: `
             <section>
-                <h2 class="title">{{ title }}</h2>
+                <h2 class="title2">{{ title }}</h2>
                 <div>
                     <div class="item-oneline" :class="getOnelineStatusClass(item.Status)" v-for="item in items">
                         {{ item.Name }} : {{ item.Details }}    
